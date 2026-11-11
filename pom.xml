@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>pt.ztp</groupId>
+	<artifactId>KompleteKontrolMK1</artifactId>
+	<packaging>jar</packaging>
+	<name>KompleteKontrolMK1</name>
+	<description>Bitwig Studio extension for the Native Instruments Komplete Kontrol S-series MK1 keyboards, which plays the keyboard through its NI Controller Editor templates and shows their key zones on the light guide. Based on DrivenByMoss by Jürgen Moßgraber.</description>
+	<url>https://github.com/akaztp/KompleteKontrolMK1</url>
+	<version>1.0.0</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>LGPL-3.0-or-later</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<repositories>
+		<repository>
+			<!-- Holds purejavahidapi, which is not published on Maven Central (copied from DrivenByMoss) -->
+			<id>maven-local-repository</id>
+			<url>file:///${project.basedir}/maven-local-repository</url>
+		</repository>
+		<repository>
+			<id>bitwig</id>
+			<name>Bitwig Maven Repository</name>
+			<url>https://maven.bitwig.com</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.bitwig</groupId>
+			<artifactId>extension-api</artifactId>
+			<version>21</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.19.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.19.1</version>
+		</dependency>
+		<dependency>
+			<groupId>purejavahidapi</groupId>
+			<artifactId>purejavahidapi</artifactId>
+			<version>0.0.23</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.11.4</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>KompleteKontrolMK1</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+				<configuration>
+					<release>21</release>
+					<encoding>UTF-8</encoding>
+					<compilerArgs>
+						<arg>-Xlint:all,-serial,-processing,-this-escape</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- Bundle the HID libraries into the extension; Bitwig provides the extension API itself -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<artifactSet>
+								<excludes>
+									<exclude>com.bitwig:extension-api</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>net.java.dev.jna:*</artifact>
+									<excludes>
+										<exclude>META-INF/*</exclude>
+									</excludes>
+								</filter>
+								<filter>
+									<artifact>purejavahidapi:*</artifact>
+									<excludes>
+										<exclude>META-INF/*</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.3</version>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
