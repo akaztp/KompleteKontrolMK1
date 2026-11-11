@@ -56,16 +56,16 @@ public class ParamsMode extends AbstractKontrol1Mode<IParameter>
         if (this.model.hasSelectedDevice ())
         {
             final ICursorDevice cursorDevice = this.model.getCursorDevice ();
-            d.setCell (0, 0, cursorDevice.getName (8).toUpperCase (Locale.US));
+            d.setCell (0, 0, Kontrol1Display.formatName (cursorDevice.getName (), 8));
 
             final Optional<String> selectedItem = cursorDevice.getParameterBank ().getPageBank ().getSelectedItem ();
             if (selectedItem.isPresent ())
-                d.setCell (1, 0, selectedItem.get ().toUpperCase (Locale.US));
+                d.setCell (1, 0, Kontrol1Display.formatName (selectedItem.get (), 8));
 
             for (int i = 0; i < 8; i++)
             {
                 final IParameter p = this.bank.getItem (i);
-                final String name = StringUtils.shortenAndFixASCII (p.getName (8), 8).toUpperCase (Locale.US);
+                final String name = Kontrol1Display.formatName (p.getName (), 8);
                 if (!name.isEmpty ())
                     d.setCell (0, 1 + i, name).setCell (1, 1 + i, checkForUpperCase (StringUtils.shortenAndFixASCII (p.getDisplayedValue (8), 8)));
 

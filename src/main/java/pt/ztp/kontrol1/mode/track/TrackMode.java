@@ -15,9 +15,7 @@ import de.mossgrabers.framework.daw.data.ITrack;
 import de.mossgrabers.framework.daw.data.bank.ISendBank;
 import de.mossgrabers.framework.daw.data.bank.ITrackBank;
 import de.mossgrabers.framework.parameterprovider.track.SelectedTrackParameterProvider;
-import de.mossgrabers.framework.utils.StringUtils;
 
-import java.util.Locale;
 import java.util.Optional;
 
 
@@ -63,7 +61,7 @@ public class TrackMode extends AbstractKontrol1Mode<ITrack>
         final boolean isEffectTrackBankActive = this.model.isEffectTrackBankActive ();
 
         final ITrack track = t.get ();
-        d.setCell (0, 0, (isEffectTrackBankActive ? "TR-FX " : "TRACK ") + (track.getPosition () + 1)).setCell (1, 0, StringUtils.shortenAndFixASCII (track.getName (), 8).toUpperCase (Locale.US));
+        d.setCell (0, 0, (isEffectTrackBankActive ? "TR-FX " : "TRACK ") + (track.getPosition () + 1)).setCell (1, 0, Kontrol1Display.formatName (track.getName (), 8));
 
         d.setCell (0, 1, "VOLUME").setCell (1, 1, getSecondLineText (track)).setCell (0, 2, "PAN").setCell (1, 2, track.getPanStr (8));
         d.setBar (1, this.surface.getContinuous (ContinuousID.KNOB1).isTouched (), track.getVolume ());
@@ -74,7 +72,8 @@ public class TrackMode extends AbstractKontrol1Mode<ITrack>
         {
             final int pos = 3 + i;
             final ISend sendData = sendBank.getItem (i);
-            d.setCell (0, pos, StringUtils.shortenAndFixASCII (sendData.getName (8), 8).toUpperCase (Locale.US)).setCell (1, pos, sendData.getDisplayedValue (8));
+            // Sends are named after their effect tracks
+            d.setCell (0, pos, Kontrol1Display.formatName (sendData.getName (), 8)).setCell (1, pos, sendData.getDisplayedValue (8));
             d.setBar (pos, this.surface.getContinuous (ContinuousID.get (ContinuousID.KNOB3, i)).isTouched () && sendData.doesExist (), sendData.getValue ());
         }
         d.allDone ();

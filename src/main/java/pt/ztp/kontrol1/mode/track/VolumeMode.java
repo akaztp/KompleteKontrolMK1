@@ -15,9 +15,7 @@ import de.mossgrabers.framework.daw.data.bank.ITrackBank;
 import de.mossgrabers.framework.parameterprovider.IParameterProvider;
 import de.mossgrabers.framework.parameterprovider.track.PanParameterProvider;
 import de.mossgrabers.framework.parameterprovider.track.VolumeParameterProvider;
-import de.mossgrabers.framework.utils.StringUtils;
 
-import java.util.Locale;
 import java.util.Optional;
 
 
@@ -78,7 +76,7 @@ public class VolumeMode extends AbstractKontrol1Mode<ITrack>
         {
             final boolean isSel = i == selIndex;
             final ITrack t = tb.getItem (i);
-            final String n = StringUtils.shortenAndFixASCII (t.getName (), isSel ? 7 : 8).toUpperCase (Locale.US);
+            final String n = Kontrol1Display.formatName (t.getName (), isSel ? 7 : 8);
             d.setCell (0, 1 + i, isSel ? ">" + n : n);
 
             final boolean isTouched = this.surface.getContinuous (ContinuousID.get (ContinuousID.KNOB1, i)).isTouched () && t.doesExist ();

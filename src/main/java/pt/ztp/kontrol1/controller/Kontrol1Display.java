@@ -11,6 +11,8 @@ import de.mossgrabers.framework.controller.display.ITextDisplay;
 import de.mossgrabers.framework.daw.IHost;
 import de.mossgrabers.framework.utils.StringUtils;
 
+import java.util.Locale;
+
 
 /**
  * The display of Kontrol 1.
@@ -42,6 +44,23 @@ public class Kontrol1Display extends AbstractTextDisplay
         super (host, null, 2 /* No of rows */, 9 /* No of cells */, 72 /* No of characters */);
         this.maxParameterValue = maxParameterValue;
         this.usbDevice = usbDevice;
+    }
+
+
+    /**
+     * Fit a name into a cell of the display, in capitals. A name which is too long loses its spaces
+     * and is then cut off, which is easier to read than leaving out its vowels.
+     *
+     * @param name The name, may be null
+     * @param length The number of characters which fit
+     * @return The name to display
+     */
+    public static String formatName (final String name, final int length)
+    {
+        String text = StringUtils.fixASCII (name);
+        if (text.length () > length)
+            text = text.replaceAll ("\\s+", "");
+        return StringUtils.limit (text, length).toUpperCase (Locale.US);
     }
 
 
