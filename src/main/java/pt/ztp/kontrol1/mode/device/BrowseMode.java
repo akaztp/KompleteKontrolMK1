@@ -46,7 +46,7 @@ public class BrowseMode extends AbstractKontrol1Mode<IItem>
      */
     public BrowseMode (final Kontrol1ControlSurface surface, final IModel model)
     {
-        super ("Browse", surface, model);
+        super ("BROWSE", surface, model);
 
         this.selectionMode = SELECTION_OFF;
         this.filterColumn = 0;

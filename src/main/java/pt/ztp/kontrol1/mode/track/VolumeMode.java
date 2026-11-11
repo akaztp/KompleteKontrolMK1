@@ -39,7 +39,7 @@ public class VolumeMode extends AbstractKontrol1Mode<ITrack>
      */
     public VolumeMode (final Kontrol1ControlSurface surface, final IModel model)
     {
-        super ("Volume / Pan", surface, model, model.getCurrentTrackBank ());
+        super ("VOLUME / PAN", surface, model, model.getCurrentTrackBank ());
 
         model.addTrackBankObserver (this::switchBanks);
 
