@@ -1,4 +1,4 @@
-# KK1 Splits — Komplete Kontrol MK1 for Bitwig Studio
+# KK1 — Komplete Kontrol MK1 for Bitwig Studio
 
 A Bitwig Studio controller extension for the first-generation **Native Instruments Komplete Kontrol S-series keyboards (S25, S49, S61, S88 MK1)**. The keyboard plays through **your templates in NI's Controller Editor**, with their splits, MIDI channels, transposition and pedals. The extension gives **each MIDI channel its own Bitwig input** and **lights the keys in your templates' zone colours**. On top of that comes the full MK1 support from [DrivenByMoss](https://github.com/git-moss/DrivenByMoss): display, knobs, transport, mixer, device parameters and browser.
 
@@ -13,11 +13,22 @@ Everything the DrivenByMoss MK1 driver does with the display, knobs and buttons,
 - **Key lights for your templates**: the extension reads your templates from Controller Editor and lights each key in its zone's colour, brighter while held. It follows Preset Up/Down and shows the template's name and zones on the display.
 - **Volume / Pan**: in the mode with the 8 tracks' volumes, hold **Shift** to turn their panning with the same knobs. Hold the **Scale** button to turn any knob in fine steps.
 
+## Changes from DrivenByMoss
+
+Since the NI template plays the keys, some of DrivenByMoss's MK1 functions are removed or changed:
+
+- **Scales are removed**: the Scale mode, the scale settings, and the key lights for scales and drum pads. The keys show the template's zones instead.
+- **The Scale button turns the knobs in fine steps** while held, instead of opening the Scale mode. In DrivenByMoss, Shift did this.
+- **Shift + knobs in the volume mode turn the tracks' panning**. The mode is now called Volume / Pan.
+- **Up / Down in the Parameters mode are swapped**: Down selects the next device and Up the previous one.
+- **Long names on the display lose their spaces and are cut off**, instead of losing their vowels. This applies to tracks, sends, devices, parameter pages and parameters. The mode names are shown in capitals.
+- **Knobs move as far down as up.** In DrivenByMoss, turning a knob down slowly moved twice as far as turning it up.
+
 ## Installation
 
 1. Download `KompleteKontrolMK1.bwextension` from the [Releases](https://github.com/akaztp/KompleteKontrolMK1/releases) page (or [build it](#building-from-source)).
 2. Copy it to `Documents\Bitwig Studio\Extensions` (macOS: `~/Documents/Bitwig Studio/Extensions`).
-3. In Bitwig: **Settings → Controllers → Add Controller → Native Instruments → Komplete Kontrol Sxx mk I (KK1 Splits)**.
+3. In Bitwig: **Settings → Controllers → Add Controller → Native Instruments → Komplete Kontrol Sxx mk I (KK1)**.
 4. The NI hardware drivers and NI's Controller Editor must be installed, as for DrivenByMoss. Set up your templates in Controller Editor, then close it before you play in Bitwig.
 
 You can keep DrivenByMoss installed for your other controllers. **Remove DrivenByMoss's own "Komplete Kontrol Sxx mk I" controller from the list**, because both would try to take over the keyboard's USB connection.

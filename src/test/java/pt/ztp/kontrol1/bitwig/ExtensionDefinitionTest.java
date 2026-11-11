@@ -29,7 +29,7 @@ class ExtensionDefinitionTest
             final ControllerExtensionDefinition definition = (ControllerExtensionDefinition) extension;
             ids.add (definition.getId ());
             names.add (definition.getName ());
-            assertTrue (definition.getName ().endsWith ("(KK1 Splits)"), definition.getName ());
+            assertTrue (definition.getName ().endsWith ("(KK1)"), definition.getName ());
             assertEquals ("Native Instruments", definition.getHardwareVendor ());
             assertTrue (definition.getAuthor ().contains ("Moßgraber"), "credits DrivenByMoss");
         }

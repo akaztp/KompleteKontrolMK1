@@ -24,7 +24,7 @@ import java.util.UUID;
 public class Kontrol1ControllerDefinition extends DefaultControllerDefinition
 {
     /** The name of this project, appended to the hardware model names. */
-    public static final String     PRODUCT_NAME       = "KK1 Splits";
+    public static final String     PRODUCT_NAME       = "KK1";
 
     /** The author shown in Bitwig. */
     public static final String     AUTHOR             = "akaztp, based on DrivenByMoss by J. Moßgraber";
