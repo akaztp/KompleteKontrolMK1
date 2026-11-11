@@ -195,6 +195,20 @@ public class Kontrol1ControllerSetup extends AbstractControllerSetup<Kontrol1Con
         // Turning the log on prints the state of the keyboard and its templates
         this.configuration.addSettingObserver (Kontrol1Configuration.LOG_TO_CONSOLE, this::logState);
         this.logState ();
+
+        // The brightness of the key lights which are not held
+        this.configuration.addSettingObserver (Kontrol1Configuration.UNHELD_KEY_BRIGHTNESS, this::updateUnheldKeyBrightness);
+        this.updateUnheldKeyBrightness ();
+    }
+
+
+    /**
+     * Set the brightness of the key lights which are not held, and send the keys again with it.
+     */
+    private void updateUnheldKeyBrightness ()
+    {
+        ((Kontrol1ColorManager) this.colorManager).setZoneDimFactor (this.configuration.getUnheldKeyBrightness ());
+        this.getSurface ().resendKeyLEDs ();
     }
 
 

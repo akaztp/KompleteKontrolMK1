@@ -12,11 +12,13 @@ import java.util.List;
 
 import de.mossgrabers.framework.configuration.AbstractConfiguration;
 import de.mossgrabers.framework.configuration.IEnumSetting;
+import de.mossgrabers.framework.configuration.IIntegerSetting;
 import de.mossgrabers.framework.configuration.ISettingsUI;
 import de.mossgrabers.framework.configuration.IStringSetting;
 import de.mossgrabers.framework.controller.valuechanger.IValueChanger;
 import de.mossgrabers.framework.daw.IHost;
 import de.mossgrabers.framework.daw.midi.ArpeggiatorMode;
+import pt.ztp.kontrol1.controller.Kontrol1ColorManager;
 import pt.ztp.kontrol1.template.NiTemplate;
 import pt.ztp.kontrol1.template.NiTemplateFile;
 
@@ -33,6 +35,8 @@ public class Kontrol1Configuration extends AbstractConfiguration
     public static final Integer ACTIVE_TEMPLATE       = Integer.valueOf (NEXT_SETTING_ID);
     /** ID for the setting to log to Bitwig's console. */
     public static final Integer LOG_TO_CONSOLE        = Integer.valueOf (NEXT_SETTING_ID + 1);
+    /** ID for the brightness of the key lights which are not held. */
+    public static final Integer UNHELD_KEY_BRIGHTNESS = Integer.valueOf (NEXT_SETTING_ID + 2);
 
     private static final String CATEGORY_KEYBOARD     = "Keyboard";
     private static final String CATEGORY_DIAGNOSTICS  = "Diagnostics";
@@ -42,6 +46,7 @@ public class Kontrol1Configuration extends AbstractConfiguration
     private String []           activeTemplateOptions = new String [0];
     private IEnumSetting        activeTemplateSetting;
     private int                 activeTemplate;
+    private int                 unheldKeyBrightness   = (int) Math.round (Kontrol1ColorManager.DEFAULT_ZONE_DIM_FACTOR * 100);
     private boolean             isLogToConsole;
 
 
@@ -66,6 +71,14 @@ public class Kontrol1Configuration extends AbstractConfiguration
         // NI template (KompleteKontrolMK1)
 
         this.initTemplateSettings (globalSettings);
+
+        // 100% lights the keys which are not held as bright as the held ones, 0% leaves them dark
+        final IIntegerSetting brightnessSetting = globalSettings.getRangeSetting ("Unheld Key Brightness", CATEGORY_KEYBOARD, 0, 100, 1, "%", this.unheldKeyBrightness);
+        brightnessSetting.addValueObserver (value -> {
+            this.unheldKeyBrightness = Math.clamp (value.intValue (), 0, 100);
+            this.notifyObservers (UNHELD_KEY_BRIGHTNESS);
+        });
+        this.isSettingActive.add (UNHELD_KEY_BRIGHTNESS);
 
         // ----------------------------------------------------------------
         // Play and Sequence
@@ -217,6 +230,17 @@ public class Kontrol1Configuration extends AbstractConfiguration
     {
         if (this.activeTemplateSetting != null)
             this.activeTemplateSetting.set (this.activeTemplateOptions[Math.floorMod (this.activeTemplate + delta, this.activeTemplateOptions.length)]);
+    }
+
+
+    /**
+     * Get the brightness of the key lights which are not held, relative to the held ones.
+     *
+     * @return The brightness, 0 (dark) to 1 (as bright as the held keys)
+     */
+    public double getUnheldKeyBrightness ()
+    {
+        return this.unheldKeyBrightness / 100.0;
     }
 
 

@@ -9,9 +9,10 @@ import de.mossgrabers.framework.controller.color.ColorEx;
 /**
  * The key zone colors of NI's Controller Editor, and how the light guide shows them.
  *
- * Controller Editor stores a color as its index in its color list. Index 1 (orange) and 9
- * (turquoise, which the keyboard shows as a blue) are confirmed on an S88; the others follow the
- * order of the list. The RGB values are chosen to be distinguishable on the light guide.
+ * Controller Editor stores a color as its index in its color list, which is the order of its color
+ * picker (four colors per row). The RGB values are the ones which are sent to the keyboard (0-127
+ * per channel). They are tuned by eye on an S88, so that the keys look like the picker's colors.
+ * Black leaves the keys of a zone dark.
  *
  * @author akaztp
  */
@@ -23,40 +24,43 @@ public final class NiColors
     }
 
 
+    /** The highest value of a color channel, as sent to the keyboard. */
+    private static final int      MAX_VALUE = 127;
+
     // @formatter:off
     private static final Entry [] ENTRIES =
     {
-        new Entry ("Red",          255,   0,   0),
-        new Entry ("Orange",       255, 110,   0),
-        new Entry ("Light Orange", 255, 160,   0),
-        new Entry ("Warm Yellow",  255, 200,   0),
-        new Entry ("Yellow",       255, 255,   0),
-        new Entry ("Lime",         170, 255,   0),
-        new Entry ("Green",          0, 255,   0),
-        new Entry ("Mint",          60, 255, 160),
-        new Entry ("Cyan",           0, 255, 255),
-        new Entry ("Turquoise",      0, 120, 255),
-        new Entry ("Blue",           0,   0, 255),
-        new Entry ("Plum",          80,   0, 255),
-        new Entry ("Violet",       140,   0, 255),
-        new Entry ("Purple",       180,   0, 220),
-        new Entry ("Magenta",      255,   0, 255),
-        new Entry ("Fuchsia",      255,   0, 170),
-        new Entry ("White",        255, 255, 255)
+        new Entry ("Red",          110,   0,   0),
+        new Entry ("Orange",       127,  19,   0),
+        new Entry ("Light Orange", 127,  40,   0),
+        new Entry ("Warm Yellow",  127,  74,   0),
+        new Entry ("Yellow",       127,  85,   0),
+        new Entry ("Lime",          63, 127,   0),
+        new Entry ("Green",          0, 127,   0),
+        new Entry ("Mint",           0, 127,  31),
+        new Entry ("Cyan",           5, 127, 127),
+        new Entry ("Turquoise",      0, 127,  91),
+        new Entry ("Blue",           0,  10, 127),
+        new Entry ("Plum",          33,  25, 127),
+        new Entry ("Violet",        61,  24, 105),
+        new Entry ("Purple",       105,  25, 122),
+        new Entry ("Magenta",      127,   0, 127),
+        new Entry ("Fuchsia",      127,   0,  68),
+        new Entry ("Black",          0,   0,   0)
     };
     // @formatter:on
 
     /** The number of colors. */
-    public static final int         NUM_COLORS = ENTRIES.length;
-    /** The index of white, which is used for unknown colors. */
-    public static final int         WHITE      = NUM_COLORS - 1;
+    public static final int         NUM_COLORS    = ENTRIES.length;
+    /** The index of orange, which is used for missing and unknown colors. */
+    public static final int         DEFAULT_INDEX = 1;
 
-    private static final ColorEx [] COLORS     = new ColorEx [NUM_COLORS];
+    private static final ColorEx [] COLORS        = new ColorEx [NUM_COLORS];
 
     static
     {
         for (int i = 0; i < NUM_COLORS; i++)
-            COLORS[i] = ColorEx.fromRGB (ENTRIES[i].red, ENTRIES[i].green, ENTRIES[i].blue);
+            COLORS[i] = new ColorEx (ENTRIES[i].red / (double) MAX_VALUE, ENTRIES[i].green / (double) MAX_VALUE, ENTRIES[i].blue / (double) MAX_VALUE);
     }
 
 
@@ -73,19 +77,19 @@ public final class NiColors
      * Check the index of a color.
      *
      * @param index The index of the color in Controller Editor's color list
-     * @return The index, or {@link #WHITE} if the color is unknown
+     * @return The index, or {@link #DEFAULT_INDEX} if the color is unknown
      */
     public static int toKnownIndex (final int index)
     {
-        return index >= 0 && index < NUM_COLORS ? index : WHITE;
+        return index >= 0 && index < NUM_COLORS ? index : DEFAULT_INDEX;
     }
 
 
     /**
-     * Get the name of a color, as Controller Editor calls it.
+     * Get the name of a color, for diagnostics.
      *
      * @param index The index of the color
-     * @return The name, white for unknown colors
+     * @return The name, the default color's for unknown colors
      */
     public static String getName (final int index)
     {
@@ -94,10 +98,10 @@ public final class NiColors
 
 
     /**
-     * Get the RGB value of a color.
+     * Get the RGB value of a color, as the keys show it.
      *
      * @param index The index of the color
-     * @return The color, white for unknown colors
+     * @return The color, the default color for unknown colors
      */
     public static ColorEx getColor (final int index)
     {

@@ -3,6 +3,7 @@
 
 package pt.ztp.kontrol1.controller;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -53,8 +54,24 @@ class Kontrol1ColorManagerTest
             final int bright = this.colorManager.getColorIndex (Kontrol1ColorManager.getZoneColorID (i, true));
             final int dim = this.colorManager.getColorIndex (Kontrol1ColorManager.getZoneColorID (i, false));
             assertEquals (NiColors.getColor (i), this.colorManager.getColor (bright, null));
-            assertEquals (NiColors.getColor (i).dim (0.3), this.colorManager.getColor (dim, null));
+            assertEquals (NiColors.getColor (i).dim (Kontrol1ColorManager.DEFAULT_ZONE_DIM_FACTOR), this.colorManager.getColor (dim, null));
         }
+    }
+
+
+    @Test
+    void unheldKeysFollowTheBrightness ()
+    {
+        final int bright = this.colorManager.getColorIndex (Kontrol1ColorManager.getZoneColorID (1, true));
+        final int dim = this.colorManager.getColorIndex (Kontrol1ColorManager.getZoneColorID (1, false));
+
+        this.colorManager.setZoneDimFactor (1.0);
+        assertEquals (this.colorManager.getColor (bright, null), this.colorManager.getColor (dim, null));
+        this.colorManager.setZoneDimFactor (0.5);
+        assertEquals (NiColors.getColor (1).dim (0.5), this.colorManager.getColor (dim, null));
+        this.colorManager.setZoneDimFactor (0.0);
+        assertArrayEquals (new int [3], this.colorManager.getColor (dim, null).toIntRGB127 ());
+        assertEquals (NiColors.getColor (1), this.colorManager.getColor (bright, null));
     }
 
 

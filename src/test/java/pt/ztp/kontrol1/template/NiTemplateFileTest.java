@@ -3,6 +3,7 @@
 
 package pt.ztp.kontrol1.template;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+
+import de.mossgrabers.framework.controller.color.ColorEx;
 
 
 class NiTemplateFileTest
@@ -131,21 +134,26 @@ class NiTemplateFileTest
 
 
     @Test
-    void unknownColorsAreWhite () throws IOException
+    void unknownColorsAreTheDefaultColor () throws IOException
     {
         final NiZone zone = parse (FILE.replace ("<color-index>9</color-index>", "<color-index>42</color-index>")).templates ().get (1).zones ().get (0);
-        assertEquals (NiColors.WHITE, zone.color ());
+        assertEquals (NiColors.DEFAULT_INDEX, zone.color ());
     }
 
 
     @Test
-    void niColorsHaveControllerEditorsNames ()
+    void niColorsHaveControllerEditorsNamesAndTheValuesTunedOnTheKeys ()
     {
-        // Confirmed on an S88: 1 is orange, 9 is a blue
+        // Confirmed on an S88: 1 is orange, 9 is a blue. The values are the ones sent to the keys.
         assertEquals ("Orange", NiColors.getName (1));
+        assertArrayEquals (new int [] { 127, 19, 0 }, NiColors.getColor (1).toIntRGB127 ());
         assertEquals ("Turquoise", NiColors.getName (9));
-        assertEquals ("White", NiColors.getName (99));
-        assertEquals ("White", NiColors.getName (-1));
+        assertArrayEquals (new int [] { 0, 127, 91 }, NiColors.getColor (9).toIntRGB127 ());
+        // The last color of the picker
+        assertEquals (ColorEx.BLACK, NiColors.getColor (NiColors.NUM_COLORS - 1));
+
+        assertEquals ("Orange", NiColors.getName (99));
+        assertEquals ("Orange", NiColors.getName (-1));
     }
 
 

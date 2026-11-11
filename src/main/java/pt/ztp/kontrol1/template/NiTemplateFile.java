@@ -156,7 +156,7 @@ public final class NiTemplateFile
                 final int lowKey = Math.clamp (getInt (keyZone, "lowerKey", 0), 0, 127);
                 final int highKey = Math.clamp (getInt (keyZone, "upperKey", 127), 0, 127);
                 final int transpose = getInt (keyZone, "transpose", 0);
-                final int color = NiColors.toKnownIndex (getInt (keyZone, "color-index", 1));
+                final int color = NiColors.toKnownIndex (getInt (keyZone, "color-index", NiColors.DEFAULT_INDEX));
                 zones.add (new NiZone (getText (keyZone, "label", ""), channel, lowKey, highKey, transpose, color));
             }
         }

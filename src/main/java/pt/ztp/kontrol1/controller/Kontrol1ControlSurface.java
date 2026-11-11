@@ -175,6 +175,7 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
 
     private final Kontrol1UsbDevice  usbDevice;
     private final NiTemplateKeyboard niTemplateKeyboard;
+    private boolean                  isKeyLEDResendNeeded;
 
 
     /**
@@ -240,10 +241,11 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
 
         // The keyboard keeps the lights which it has when the extension stops (until it is switched
         // off and on), so leave the zones of the template lit
+        final Kontrol1ColorManager kontrol1ColorManager = (Kontrol1ColorManager) this.colorManager;
         for (int i = 0; i < 88; i++)
         {
             final NiZone zone = this.niTemplateKeyboard.getZoneForKeyIndex (i);
-            final int [] rgb = zone == null ? new int [3] : Kontrol1ColorManager.getZoneColor (zone.color (), false).toIntRGB127 ();
+            final int [] rgb = zone == null ? new int [3] : kontrol1ColorManager.getZoneColor (zone.color (), false).toIntRGB127 ();
             this.usbDevice.setKeyLED (i, rgb[0], rgb[1], rgb[2]);
         }
         this.updateKeyLEDs ();
@@ -260,7 +262,31 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
     {
         super.updateGrid ();
 
+        // The light guide only sends the keys whose color changed, so send all keys after the RGB
+        // values of their colors changed. Done after drawing, so that they get their new colors.
+        if (this.isKeyLEDResendNeeded)
+        {
+            this.isKeyLEDResendNeeded = false;
+            final int firstNote = this.usbDevice.getFirstNote ();
+            for (int i = 0; i < this.usbDevice.getNumKeys (); i++)
+            {
+                final int note = firstNote + i;
+                if (note >= 0 && note < 128)
+                    this.lightGuide.sendState (note);
+            }
+        }
+
         this.updateKeyLEDs ();
+    }
+
+
+    /**
+     * Send the colors of all keys again with the next update, after the RGB values of their colors
+     * changed.
+     */
+    public void resendKeyLEDs ()
+    {
+        this.isKeyLEDResendNeeded = true;
     }
 
 

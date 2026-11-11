@@ -38,7 +38,11 @@ public class Kontrol1ColorManager extends ColorManager
     // range of 0..127 (see LightInfo), the free ranges are 7..49 and 55..99.
     private static final int    ZONE_COLOR_DIM_START  = 10;
     private static final int    ZONE_COLOR_START      = 60;
-    private static final double ZONE_DIM_FACTOR       = 0.3;
+
+    /** The default brightness of the keys which are not held, relative to the held ones. */
+    public static final double  DEFAULT_ZONE_DIM_FACTOR = 0.3;
+
+    private double              zoneDimFactor           = DEFAULT_ZONE_DIM_FACTOR;
 
 
     /**
@@ -102,10 +106,23 @@ public class Kontrol1ColorManager extends ColorManager
      * @param isBright True for the full brightness version (held key), false for the dimmed version
      * @return The color
      */
-    public static ColorEx getZoneColor (final int colorIndex, final boolean isBright)
+    public ColorEx getZoneColor (final int colorIndex, final boolean isBright)
     {
         final ColorEx color = NiColors.getColor (colorIndex);
-        return isBright ? color : color.dim (ZONE_DIM_FACTOR);
+        return isBright ? color : color.dim (this.zoneDimFactor);
+    }
+
+
+    /**
+     * Set the brightness of the keys which are not held. The light guide needs to send the keys
+     * again to show it.
+     *
+     * @param dimFactor The brightness relative to the held keys, 0 (dark) to 1 (as bright as the
+     *            held keys)
+     */
+    public void setZoneDimFactor (final double dimFactor)
+    {
+        this.zoneDimFactor = Math.clamp (dimFactor, 0.0, 1.0);
     }
 
 

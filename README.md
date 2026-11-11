@@ -49,7 +49,7 @@ An input that no track listens to may stay inactive in Bitwig's input list, even
 
 ### Key lights
 
-Once the extension takes over the display, the keyboard stops drawing the template's lights itself. So the extension reads your templates from the file in which Controller Editor keeps them (`C:\ProgramData\Native Instruments\Controller Editor\KompleteKontrol.ncs`), and lights each key in its zone's colour, brighter while held. Keys outside every zone stay dark.
+Once the extension takes over the display, the keyboard stops drawing the template's lights itself. So the extension reads your templates from the file in which Controller Editor keeps them (`C:\ProgramData\Native Instruments\Controller Editor\KompleteKontrol.ncs`), and lights each key in its zone's colour, brighter while held. The colours are tuned by eye on an S88 to look like the ones in Controller Editor's colour picker. How bright the keys are while not held is set in **Keyboard → Unheld Key Brightness**. Keys outside every zone, or in a zone coloured black (the picker's last colour), stay dark.
 
 - The keyboard's **Octave −/+** buttons shift the notes the keys play, while the zones and their lights stay on the same keys.
 - If the file can't be read, Bitwig shows a notification when the extension starts, and the extension leaves the lights alone.
@@ -81,6 +81,7 @@ All of these are in Bitwig under **Settings → Controllers → (this controller
 
 - **Keyboard**
   - *Active Template*: the template which the keyboard plays, numbered as in Controller Editor's list. The extension follows Preset Up/Down; choose the right one here if the key lights show another template than the keyboard plays. Only shown if the templates could be read.
+  - *Unheld Key Brightness*: how bright the key lights are while the keys are not held, relative to held keys. 100% lights them as bright as held keys (so held keys no longer stand out), 0% leaves them dark so only held keys light up. The default is 30%. At low values, colours with a weak red, green or blue part may shift a little, since the keys take only 128 steps per part.
 - **Diagnostics**
   - *Log to Console*: prints to Bitwig's control script console the USB connection, the note inputs, where the templates were read from and the active template. After that, it prints each template change with its zones, each incoming note and CC with its MIDI channel and the inputs it reaches, and changes of the keyboard's status bytes, such as an octave shift. It also prints the USB reports the keyboard sends, and whether the reports the extension sends to it go through. See [Troubleshooting](#troubleshooting).
 - The DrivenByMoss MK1 settings for playing, transport and workflow.
@@ -89,7 +90,7 @@ All of these are in Bitwig under **Settings → Controllers → (this controller
 
 Version 1.0.0 is tested on an S88 MK1 with Bitwig Studio 6.1: the templates' notes reach the note inputs of their MIDI channels, Preset Up/Down switch templates, and the display, knobs and transport work. Not tested yet:
 
-- The key lights: the zone colours, held keys, following Preset Up/Down, and the zones while the keyboard is octave-shifted. Of Controller Editor's colours, only 1 (orange) and 9 (turquoise, which the keyboard shows as blue) are confirmed.
+- The key lights: held keys, following Preset Up/Down, and the zones while the keyboard is octave-shifted.
 - The pedals through the note inputs.
 - The S25, S49 and S61. The extension assumes that their left-most key plays C2 on the S25 and C1 on the S49 and S61 when not octave-shifted (A-1 on the S88, with C3 = MIDI note 60). If that is wrong, the zones light up an octave away from the keys they play.
 - Controller Editor's file on macOS: its location there is a guess.
