@@ -81,7 +81,7 @@ All of these are in Bitwig under **Settings → Controllers → (this controller
 
 - **Keyboard**
   - *Active Template*: the template which the keyboard plays, numbered as in Controller Editor's list. The extension follows Preset Up/Down; choose the right one here if the key lights show another template than the keyboard plays. Only shown if the templates could be read.
-  - *Unheld Key Brightness*: how bright the key lights are while the keys are not held, relative to held keys. 100% lights them as bright as held keys (so held keys no longer stand out), 0% leaves them dark so only held keys light up. The default is 30%. At low values, colours with a weak red, green or blue part may shift a little, since the keys take only 128 steps per part.
+  - *Unheld Key Brightness*: how bright the key lights are while the keys are not held, relative to held keys. 100% lights them as bright as held keys (so held keys no longer stand out), 0% leaves them dark so only held keys light up. The default is 50%. At low values, colours with a weak red, green or blue part may shift a little, since the keys take only 128 steps per part.
 - **Diagnostics**
   - *Log to Console*: prints to Bitwig's control script console the USB connection, the note inputs, where the templates were read from and the active template. After that, it prints each template change with its zones, each incoming note and CC with its MIDI channel and the inputs it reaches, and changes of the keyboard's status bytes, such as an octave shift. It also prints the USB reports the keyboard sends, and whether the reports the extension sends to it go through. See [Troubleshooting](#troubleshooting).
 - The DrivenByMoss MK1 settings for playing, transport and workflow.

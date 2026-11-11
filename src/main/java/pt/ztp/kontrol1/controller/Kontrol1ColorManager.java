@@ -40,7 +40,7 @@ public class Kontrol1ColorManager extends ColorManager
     private static final int    ZONE_COLOR_START      = 60;
 
     /** The default brightness of the keys which are not held, relative to the held ones. */
-    public static final double  DEFAULT_ZONE_DIM_FACTOR = 0.3;
+    public static final double  DEFAULT_ZONE_DIM_FACTOR = 0.5;
 
     private double              zoneDimFactor           = DEFAULT_ZONE_DIM_FACTOR;
 
