@@ -57,9 +57,9 @@ Once the extension takes over the display, the keyboard stops drawing the templa
 
 ### Which template is active
 
-The keyboard doesn't tell the extension which template it plays, and Controller Editor's file only names the template that was selected when Controller Editor last saved it. So the extension follows your Preset Up/Down presses and remembers the template between sessions. If Controller Editor saved its file since the extension last read it, the extension starts with the template named in the file.
+The keyboard doesn't tell the extension which template it plays, and Controller Editor's file only names the template that was selected when Controller Editor last saved it. So the extension follows your Preset Up/Down presses and remembers the template between sessions. If Controller Editor saved its file since the extension last read it, the extension starts with the template named in the file. When the extension starts, Bitwig briefly shows the template it assumes, for example `Komplete Kontrol template 4: CH_2/3/4`.
 
-If the lights show another template than the keyboard plays, for example after you switched templates while Bitwig was closed, choose the right one in **Keyboard → Active Template**.
+If the lights show another template than the keyboard plays, choose the right one in **Keyboard → Active Template**. This can happen after you switched templates while Bitwig was closed, or selected another template in Controller Editor, which switches the keyboard too. A sign of it: keys that don't light up brighter while held.
 
 ### After changing your templates
 

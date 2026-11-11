@@ -342,7 +342,14 @@ public class Kontrol1ControllerSetup extends AbstractControllerSetup<Kontrol1Con
             final String status = this.configuration.getNiTemplateFileStatus ();
             this.host.showNotification ("Komplete Kontrol: " + status);
             this.host.println (Kontrol1ControlSurface.LOG_PREFIX + status);
+            return;
         }
+
+        // The keyboard doesn't tell which template it plays, so name the one which the key lights
+        // assume, to make a mismatch easy to spot. Bitwig shows it only briefly, so keep it short,
+        // as in the Active Template setting
+        final NiTemplate template = this.configuration.getActiveTemplate ();
+        this.host.showNotification ("Komplete Kontrol template " + (this.configuration.getActiveTemplateIndex () + 1) + ": " + template.name ());
     }
 
 
