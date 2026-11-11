@@ -10,6 +10,8 @@ import pt.ztp.kontrol1.controller.Kontrol1ControlSurface;
 import de.mossgrabers.framework.command.trigger.Direction;
 import de.mossgrabers.framework.daw.IModel;
 import de.mossgrabers.framework.featuregroup.IMode;
+import de.mossgrabers.framework.featuregroup.ModeManager;
+import de.mossgrabers.framework.mode.Modes;
 
 
 /**
@@ -36,9 +38,7 @@ public class Kontrol1CursorCommand extends de.mossgrabers.framework.command.trig
     @Override
     protected void scrollUp ()
     {
-        final IMode mode = this.surface.getModeManager ().getActive ();
-        if (mode != null)
-            mode.selectNextItemPage ();
+        this.selectItemPage (false);
     }
 
 
@@ -46,8 +46,27 @@ public class Kontrol1CursorCommand extends de.mossgrabers.framework.command.trig
     @Override
     protected void scrollDown ()
     {
-        final IMode mode = this.surface.getModeManager ().getActive ();
-        if (mode != null)
+        this.selectItemPage (true);
+    }
+
+
+    /**
+     * Select the next or previous item page of the active mode. Up selects the next one, except in
+     * the Parameters mode, where Down selects the next device (or device page with Shift).
+     *
+     * @param isDown True if Down was pressed, false for Up
+     */
+    private void selectItemPage (final boolean isDown)
+    {
+        final ModeManager modeManager = this.surface.getModeManager ();
+        final IMode mode = modeManager.getActive ();
+        if (mode == null)
+            return;
+
+        final boolean isNext = modeManager.isActive (Modes.DEVICE_PARAMS) ? isDown : !isDown;
+        if (isNext)
+            mode.selectNextItemPage ();
+        else
             mode.selectPreviousItemPage ();
     }
 }

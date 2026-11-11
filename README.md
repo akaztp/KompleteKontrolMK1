@@ -74,6 +74,7 @@ Close Controller Editor and restart the extension (or Bitwig), so it reads the t
 | **Preset Up / Preset Down** | The keyboard switches templates, the extension follows. The LEDs are lit if there is more than one template. |
 | **Octave − / +** | The keyboard shifts the notes. The display shows the new range. |
 | **Knobs in the Volume / Pan mode** | The volume of the 8 tracks. While **Shift** is held, their panning, and the display shows the pan values. |
+| **Up / Down in the Parameters mode** | Down selects the next device and Up the previous one, the other way round from DrivenByMoss. With **Shift**, the next or previous page of devices. |
 | **Scale** | Hold it while turning a knob to change the value in fine steps, a tenth of the normal ones by default. |
 | **Instance** | No function. |
 | **All other buttons, knobs and the display** | As in DrivenByMoss's MK1 driver. |
