@@ -343,12 +343,23 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
     @Override
     public void encoderChanged (final int encIndex, final int change)
     {
-        final int v;
-        if (this.isShiftPressed ())
-            v = change < 0 ? 127 : 1;
-        else
-            v = change < 0 ? 127 + change : change;
-        this.getContinuous (ContinuousID.get (ContinuousID.KNOB1, encIndex)).getCommand ().execute (v);
+        final int value = toRelativeValue (change);
+        if (value != 0)
+            this.getContinuous (ContinuousID.get (ContinuousID.KNOB1, encIndex)).getCommand ().execute (value);
+    }
+
+
+    /**
+     * Encode a change of a knob as the relative value which the value changer expects: the number
+     * of steps in two's complement (1 is one step up, 127 one step down).
+     *
+     * @param change The number of steps, negative to turn down
+     * @return The relative value, 0 for no change
+     */
+    static int toRelativeValue (final int change)
+    {
+        final int steps = Math.clamp (change, -63, 63);
+        return steps < 0 ? 128 + steps : steps;
     }
 
 

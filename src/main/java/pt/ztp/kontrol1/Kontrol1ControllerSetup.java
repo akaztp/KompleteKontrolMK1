@@ -57,6 +57,7 @@ import de.mossgrabers.framework.featuregroup.ModeManager;
 import de.mossgrabers.framework.featuregroup.ViewManager;
 import de.mossgrabers.framework.mode.Modes;
 import de.mossgrabers.framework.scale.Scales;
+import de.mossgrabers.framework.utils.ButtonEvent;
 import de.mossgrabers.framework.view.Views;
 import purejavahidapi.PureJavaHidApi;
 
@@ -268,8 +269,12 @@ public class Kontrol1ControllerSetup extends AbstractControllerSetup<Kontrol1Con
         final Kontrol1ControlSurface surface = this.getSurface ();
         final ITransport t = this.model.getTransport ();
 
-        // The NI template plays the keys, so the scale of the light guide is not used
-        this.addButton (ButtonID.SCALES, "Scales", NopCommand.INSTANCE, CHANNEL, Kontrol1ControlSurface.BUTTON_SCALE, () -> false);
+        // The NI template plays the keys, so the scale of the light guide is not used. Instead, the
+        // knobs turn with the slow sensitivity while Scale is held, for fine adjustments
+        this.addButton (ButtonID.SCALES, "Scales", (event, velocity) -> {
+            if (event != ButtonEvent.LONG)
+                surface.setKnobSensitivityIsSlow (event == ButtonEvent.DOWN);
+        }, CHANNEL, Kontrol1ControlSurface.BUTTON_SCALE);
 
         // The keyboard itself switches its templates with Preset Up/Down: Preset Down selects the
         // next one in Controller Editor's list. The extension follows it

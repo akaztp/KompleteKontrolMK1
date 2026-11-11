@@ -11,6 +11,7 @@ Everything the DrivenByMoss MK1 driver does with the display, knobs and buttons,
 - **Your NI templates play the keys**: the keyboard applies the template selected in Controller Editor, with its key zones, MIDI channels, transposition, pedals, pitch bend and modulation. **Preset Up/Down** switch templates as usual.
 - **One Bitwig input per MIDI channel**: `KK1 Ch 1` to `KK1 Ch 16`, so each zone of a template can play its own track. `KK1 Keyboard` receives every channel.
 - **Key lights for your templates**: the extension reads your templates from Controller Editor and lights each key in its zone's colour, brighter while held. It follows Preset Up/Down and shows the template's name and zones on the display.
+- **Volume / Pan**: in the mode with the 8 tracks' volumes, hold **Shift** to turn their panning with the same knobs. Hold the **Scale** button to turn any knob in fine steps.
 
 ## Installation
 
@@ -72,7 +73,9 @@ Close Controller Editor and restart the extension (or Bitwig), so it reads the t
 | **Keys, wheels, pedals** | As set in the template. |
 | **Preset Up / Preset Down** | The keyboard switches templates, the extension follows. The LEDs are lit if there is more than one template. |
 | **Octave − / +** | The keyboard shifts the notes. The display shows the new range. |
-| **Scale**, **Instance** | No function. |
+| **Knobs in the Volume / Pan mode** | The volume of the 8 tracks. While **Shift** is held, their panning, and the display shows the pan values. |
+| **Scale** | Hold it while turning a knob to change the value in fine steps, a tenth of the normal ones by default. |
+| **Instance** | No function. |
 | **All other buttons, knobs and the display** | As in DrivenByMoss's MK1 driver. |
 
 ## Settings reference
@@ -84,7 +87,10 @@ All of these are in Bitwig under **Settings → Controllers → (this controller
   - *Unheld Key Brightness*: how bright the key lights are while the keys are not held, relative to held keys. 100% lights them as bright as held keys (so held keys no longer stand out), 0% leaves them dark so only held keys light up. The default is 50%. At low values, colours with a weak red, green or blue part may shift a little, since the keys take only 128 steps per part.
 - **Diagnostics**
   - *Log to Console*: prints to Bitwig's control script console the USB connection, the note inputs, where the templates were read from and the active template. After that, it prints each template change with its zones, each incoming note and CC with its MIDI channel and the inputs it reaches, and changes of the keyboard's status bytes, such as an octave shift. It also prints the USB reports the keyboard sends, and whether the reports the extension sends to it go through. See [Troubleshooting](#troubleshooting).
-- The DrivenByMoss MK1 settings for playing, transport and workflow.
+- **Workflow**
+  - *Knob Sensitivity Default*: how fast the knobs change values.
+  - *Knob Sensitivity Slow*: how fast they change values while **Scale** is held. The default is −90, a tenth of the normal speed.
+- The other DrivenByMoss MK1 settings for playing, transport and workflow.
 
 ## Status
 

@@ -99,7 +99,8 @@ public class Kontrol1Configuration extends AbstractConfiguration
 
         this.activateExcludeDeactivatedItemsSetting (globalSettings);
         this.activateEnableVUMetersSetting (globalSettings);
-        this.activateKnobSpeedSetting (globalSettings);
+        // Normal sensitivity, and a tenth of it (-90) while Scale is held
+        this.activateKnobSpeedSetting (globalSettings, 100, 10);
 
         // ----------------------------------------------------------------
         // Diagnostics (KompleteKontrolMK1)
