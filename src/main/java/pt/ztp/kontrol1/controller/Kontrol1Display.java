@@ -19,6 +19,12 @@ import de.mossgrabers.framework.utils.StringUtils;
  */
 public class Kontrol1Display extends AbstractTextDisplay
 {
+    /**
+     * How long a notification stays on the display, in milliseconds. Twice the framework's
+     * default, since a template's name and zones take a while to read.
+     */
+    private static final int        NOTIFICATION_TIME = 2 * AbstractTextDisplay.NOTIFICATION_TIME;
+
     private final int               maxParameterValue;
     private final Kontrol1UsbDevice usbDevice;
 
@@ -165,7 +171,7 @@ public class Kontrol1Display extends AbstractTextDisplay
         synchronized (this.notificationLock)
         {
             final boolean isRunning = this.notificationTimeout > 0;
-            this.notificationTimeout = AbstractTextDisplay.NOTIFICATION_TIME;
+            this.notificationTimeout = NOTIFICATION_TIME;
             this.clear ();
             this.flush ();
 
