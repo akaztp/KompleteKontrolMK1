@@ -10,7 +10,7 @@ Everything the DrivenByMoss MK1 driver does with the display, knobs and buttons,
 
 - **Your NI templates play the keys**: the keyboard applies the template selected in Controller Editor, with its key zones, MIDI channels, transposition, pedals, pitch bend and modulation. **Preset Up/Down** switch templates as usual.
 - **One Bitwig input per MIDI channel**: `KK1 Ch 1` to `KK1 Ch 16`, so each zone of a template can play its own track. `KK1 Keyboard` receives every channel.
-- **Key lights for your templates**: the extension reads your templates from Controller Editor and lights each key in its zone's colour, brighter while held. It follows Preset Up/Down and shows the template's name and zones on the display.
+- **Key lights for your templates**: the extension reads your templates from Controller Editor and lights each key in its zone's colour, brighter while held. It follows Preset Up/Down and shows the template's name and zones on the display. While Bitwig plays, the keys flash brighter on each beat.
 - **Volume / Pan**: in the mode with the 8 tracks' volumes, hold **Shift** to turn their panning with the same knobs. Hold the **Scale** button to turn any knob in fine steps.
 
 ## Changes from DrivenByMoss
@@ -97,6 +97,7 @@ All of these are in Bitwig under **Settings → Controllers → (this controller
 - **Keyboard**
   - *Active Template*: the template which the keyboard plays, numbered as in Controller Editor's list. The extension follows Preset Up/Down; choose the right one here if the key lights show another template than the keyboard plays. Only shown if the templates could be read.
   - *Unheld Key Brightness*: how bright the key lights are while the keys are not held, relative to held keys. 100% lights them as bright as held keys (so held keys no longer stand out), 0% leaves them dark so only held keys light up. The default is 50%. At low values, colours with a weak red, green or blue part may shift a little, since the keys take only 128 steps per part.
+  - *Flash Keys on Beat*: while Bitwig plays, the keys which are not held light up halfway between their brightness and that of held keys, for the first quarter of each beat. A beat follows the time signature, for example a quarter note in 4/4 and an eighth note in 6/8. On by default.
 - **Diagnostics**
   - *Log to Console*: prints to Bitwig's control script console the USB connection, the note inputs, where the templates were read from and the active template. After that, it prints each template change with its zones, each incoming note and CC with its MIDI channel and the inputs it reaches, and changes of the keyboard's status bytes, such as an octave shift. It also prints the USB reports the keyboard sends, and whether the reports the extension sends to it go through. See [Troubleshooting](#troubleshooting).
 - **Workflow**

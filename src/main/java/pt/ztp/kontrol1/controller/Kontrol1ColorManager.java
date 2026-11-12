@@ -43,6 +43,7 @@ public class Kontrol1ColorManager extends ColorManager
     public static final double  DEFAULT_ZONE_DIM_FACTOR = 0.5;
 
     private double              zoneDimFactor           = DEFAULT_ZONE_DIM_FACTOR;
+    private boolean             isBeatFlash;
 
 
     /**
@@ -109,7 +110,26 @@ public class Kontrol1ColorManager extends ColorManager
     public ColorEx getZoneColor (final int colorIndex, final boolean isBright)
     {
         final ColorEx color = NiColors.getColor (colorIndex);
-        return isBright ? color : color.dim (this.zoneDimFactor);
+        if (isBright)
+            return color;
+        // On a beat, the keys flash halfway between their brightness and the held keys'
+        return color.dim (this.isBeatFlash ? (this.zoneDimFactor + 1.0) / 2.0 : this.zoneDimFactor);
+    }
+
+
+    /**
+     * Light the keys which are not held halfway between their brightness and the held ones', to
+     * flash them on a beat. The light guide needs to send the keys again to show it.
+     *
+     * @param isBeatFlash True to flash
+     * @return True if this changed the colors
+     */
+    public boolean setBeatFlash (final boolean isBeatFlash)
+    {
+        if (this.isBeatFlash == isBeatFlash)
+            return false;
+        this.isBeatFlash = isBeatFlash;
+        return true;
     }
 
 

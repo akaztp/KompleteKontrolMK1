@@ -242,6 +242,7 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
         // The keyboard keeps the lights which it has when the extension stops (until it is switched
         // off and on), so leave the zones of the template lit
         final Kontrol1ColorManager kontrol1ColorManager = (Kontrol1ColorManager) this.colorManager;
+        kontrol1ColorManager.setBeatFlash (false);
         for (int i = 0; i < 88; i++)
         {
             final NiZone zone = this.niTemplateKeyboard.getZoneForKeyIndex (i);

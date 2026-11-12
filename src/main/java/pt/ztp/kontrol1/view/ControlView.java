@@ -12,6 +12,7 @@ import pt.ztp.kontrol1.template.NiTemplateKeyboard;
 import pt.ztp.kontrol1.template.NiZone;
 import de.mossgrabers.framework.controller.grid.ILightGuide;
 import de.mossgrabers.framework.daw.IModel;
+import de.mossgrabers.framework.daw.ITransport;
 import de.mossgrabers.framework.scale.Scales;
 import de.mossgrabers.framework.view.AbstractPlayView;
 
@@ -25,6 +26,10 @@ import de.mossgrabers.framework.view.AbstractPlayView;
  */
 public class ControlView extends AbstractPlayView<Kontrol1ControlSurface, Kontrol1Configuration>
 {
+    /** How long the keys flash on each beat, as a part of the beat. */
+    private static final double BEAT_FLASH_LENGTH = 0.25;
+
+
     /**
      * Constructor.
      *
@@ -50,12 +55,40 @@ public class ControlView extends AbstractPlayView<Kontrol1ControlSurface, Kontro
 
 
     /**
+     * Is the playhead at the start of a beat, where the keys flash?
+     *
+     * @param position The position of the playhead in quarter notes
+     * @param denominator The denominator of the time signature, which sets the length of a beat
+     * @return True while in the first part of a beat
+     */
+    static boolean isBeatFlash (final double position, final int denominator)
+    {
+        final double beat = position * Math.max (1, denominator) / 4.0;
+        return beat - Math.floor (beat) < BEAT_FLASH_LENGTH;
+    }
+
+
+    /**
+     * Flash the keys which are not held to full brightness at the start of each beat while playing.
+     */
+    private void updateBeatFlash ()
+    {
+        final ITransport transport = this.model.getTransport ();
+        final boolean isFlash = this.surface.getConfiguration ().isBeatFlash () && transport.isPlaying () && isBeatFlash (transport.getPlayPosition (), transport.getDenominator ());
+        if (((Kontrol1ColorManager) this.model.getColorManager ()).setBeatFlash (isFlash))
+            this.surface.resendKeyLEDs ();
+    }
+
+
+    /**
      * Light the keys in the color of their zone in the NI template which the keyboard plays; held
      * keys are lit brighter. Keys which are not part of a zone are off.
      */
     @Override
     public void drawGrid ()
     {
+        this.updateBeatFlash ();
+
         final ILightGuide lightGuide = this.surface.getLightGuide ();
         final NiTemplateKeyboard templateKeyboard = this.surface.getNiTemplateKeyboard ();
         final int firstNote = this.surface.getFirstNote ();

@@ -358,6 +358,15 @@ public interface ITransport extends IObserverManagement
 
 
     /**
+     * Get the position of the playhead, which moves while playing. Local patch
+     * (KompleteKontrolMK1): getPosition returns the play start position.
+     *
+     * @return The position in quarter notes
+     */
+    double getPlayPosition ();
+
+
+    /**
      * Set the transport playback position to the end of the project.
      */
     void setPositionToEnd ();

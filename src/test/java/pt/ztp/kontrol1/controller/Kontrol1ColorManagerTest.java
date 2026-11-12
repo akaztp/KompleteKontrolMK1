@@ -76,6 +76,19 @@ class Kontrol1ColorManagerTest
 
 
     @Test
+    void beatFlashIsHalfwayToTheHeldBrightness ()
+    {
+        final int dim = this.colorManager.getColorIndex (Kontrol1ColorManager.getZoneColorID (1, false));
+        this.colorManager.setZoneDimFactor (0.5);
+        assertTrue (this.colorManager.setBeatFlash (true));
+        assertFalse (this.colorManager.setBeatFlash (true));
+        assertEquals (NiColors.getColor (1).dim (0.75), this.colorManager.getColor (dim, null));
+        this.colorManager.setBeatFlash (false);
+        assertEquals (NiColors.getColor (1).dim (0.5), this.colorManager.getColor (dim, null));
+    }
+
+
+    @Test
     void zoneColorsDoNotShareIndicesWithOtherColors ()
     {
         final Set<Integer> zoneIndices = new HashSet<> ();

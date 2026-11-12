@@ -37,6 +37,8 @@ public class Kontrol1Configuration extends AbstractConfiguration
     public static final Integer LOG_TO_CONSOLE        = Integer.valueOf (NEXT_SETTING_ID + 1);
     /** ID for the brightness of the key lights which are not held. */
     public static final Integer UNHELD_KEY_BRIGHTNESS = Integer.valueOf (NEXT_SETTING_ID + 2);
+    /** ID for flashing the key lights on each beat while playing. */
+    public static final Integer BEAT_FLASH            = Integer.valueOf (NEXT_SETTING_ID + 3);
 
     private static final String CATEGORY_KEYBOARD     = "Keyboard";
     private static final String CATEGORY_DIAGNOSTICS  = "Diagnostics";
@@ -48,6 +50,7 @@ public class Kontrol1Configuration extends AbstractConfiguration
     private int                 activeTemplate;
     private int                 unheldKeyBrightness   = (int) Math.round (Kontrol1ColorManager.DEFAULT_ZONE_DIM_FACTOR * 100);
     private boolean             isLogToConsole;
+    private boolean             isBeatFlash           = true;
 
 
     /**
@@ -79,6 +82,13 @@ public class Kontrol1Configuration extends AbstractConfiguration
             this.notifyObservers (UNHELD_KEY_BRIGHTNESS);
         });
         this.isSettingActive.add (UNHELD_KEY_BRIGHTNESS);
+
+        final IEnumSetting beatFlashSetting = globalSettings.getEnumSetting ("Flash Keys on Beat", CATEGORY_KEYBOARD, ON_OFF_OPTIONS, ON_OFF_OPTIONS[1]);
+        beatFlashSetting.addValueObserver (value -> {
+            this.isBeatFlash = ON_OFF_OPTIONS[1].equals (value);
+            this.notifyObservers (BEAT_FLASH);
+        });
+        this.isSettingActive.add (BEAT_FLASH);
 
         // ----------------------------------------------------------------
         // Play and Sequence
@@ -242,6 +252,17 @@ public class Kontrol1Configuration extends AbstractConfiguration
     public double getUnheldKeyBrightness ()
     {
         return this.unheldKeyBrightness / 100.0;
+    }
+
+
+    /**
+     * Should the key lights which are not held flash to full brightness on each beat while playing?
+     *
+     * @return True to flash
+     */
+    public boolean isBeatFlash ()
+    {
+        return this.isBeatFlash;
     }
 
 

@@ -552,6 +552,15 @@ public class TransportImpl implements ITransport
 
     /** {@inheritDoc} */
     @Override
+    public double getPlayPosition ()
+    {
+        // Local patch (KompleteKontrolMK1)
+        return this.transport.getPosition ().get ();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
     public void changePosition (final boolean increase, final boolean slow)
     {
         final double resolution = this.getZoomResolution ();

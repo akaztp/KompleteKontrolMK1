@@ -25,6 +25,7 @@ Every patch is marked with a `Local patch (KompleteKontrolMK1)` comment.
 1. `framework/view/ColorView.java`: casts to `AbstractParameterMode` instead of the Push controller's `DeviceLayerDetailsMode`, so the Push code isn't needed.
 2. `framework/view/sequencer/AbstractDrumView.java`: uses the literal values of Maschine's `COLOR_GREEN` (30) and `COLOR_LIME_LO` (33), so the Maschine code isn't needed.
 3. `framework/daw/midi/INoteInput.java` and `bitwig/framework/midi/NoteInputImpl.java`: two new methods, `sendRawMidiEvent` and `setIncludeInAllInputs`.
+4. `framework/daw/ITransport.java` and `bitwig/framework/daw/TransportImpl.java`: a new method, `getPlayPosition`, for the moving playhead (`getPosition` returns the play start position).
 
 ## Updating to a newer DrivenByMoss
 
