@@ -63,7 +63,7 @@ An input that no track listens to may stay inactive in Bitwig's input list, even
 
 Once the extension takes over the display, the keyboard stops drawing the template's lights itself. So the extension reads your templates from the file in which Controller Editor keeps them (`C:\ProgramData\Native Instruments\Controller Editor\KompleteKontrol.ncs`), and lights each key in its zone's colour, brighter while held. The colours are tuned by eye on an S88 to look like the ones in Controller Editor's colour picker. How bright the keys are while not held is set in **Keyboard → Unheld Key Brightness**. Keys outside every zone, or in a zone coloured black (the picker's last colour), stay dark.
 
-- The keyboard's **Octave −/+** buttons shift the notes the keys play, while the zones and their lights stay on the same keys.
+- The keyboard's **Octave −/+** buttons shift the notes the keys play before the template's zones apply, so the zones and their lights move along the keys by an octave.
 - If the file can't be read, Bitwig shows a notification when the extension starts, and the extension leaves the lights alone.
 - **When Bitwig closes**, the zones stay lit in their colours, but the lights don't follow Preset Up/Down or the keys until the keyboard is switched off and on, or Controller Editor is opened.
 
@@ -83,7 +83,7 @@ Close Controller Editor and restart the extension (or Bitwig), so it reads the t
 |---|---|
 | **Keys, wheels, pedals** | As set in the template. |
 | **Preset Up / Preset Down** | The keyboard switches templates, the extension follows. The LEDs are lit if there is more than one template. |
-| **Octave − / +** | The keyboard shifts the notes. The display shows the new range. |
+| **Octave − / +** | The keyboard shifts the notes, and the zones' lights move with them. The display shows the new range. |
 | **Knobs in the Volume / Pan mode** | The volume of the 8 tracks. While **Shift** is held, their panning, and the display shows the pan values. |
 | **Up / Down in the Parameters mode** | Down selects the next device and Up the previous one, the other way round from DrivenByMoss. With **Shift**, the next or previous page of devices. |
 | **Scale** | Hold it while turning a knob to change the value in fine steps, a tenth of the normal ones by default. |

@@ -368,6 +368,9 @@ public class Kontrol1ControlSurface extends AbstractControlSurface<Kontrol1Confi
     public void octaveChanged (final int firstNote)
     {
         this.niTemplateKeyboard.setFirstNote (firstNote);
+        // The zones move along the keys. The light guide only sends the notes whose color changed,
+        // but each key now has another note, so all keys need to be sent again
+        this.resendKeyLEDs ();
         this.log (() -> "Left-most key " + Scales.formatDrumNote (firstNote) + ", octave shift " + this.niTemplateKeyboard.getOctaveShift ());
 
         final int endNote = firstNote + this.usbDevice.getNumKeys () - 1;

@@ -62,17 +62,21 @@ class NiTemplateKeyboardTest
 
 
     @Test
-    void zonesStayOnTheirKeysWhenOctaveShifted ()
+    void zonesMoveAlongTheKeysWhenOctaveShifted ()
     {
         final NiTemplateKeyboard keyboard = createKeyboard ();
         keyboard.setFirstNote (FIRST_NOTE + 12);
         assertEquals (12, keyboard.getOctaveShift ());
-        assertEquals (LEFT, keyboard.getZoneForKeyIndex (keyIndex (52)));
 
-        // Key 52 now sends 88 on channel 2
-        keyboard.noteOn (2, 88, 100);
-        assertTrue (keyboard.isKeyHeld (keyIndex (52)));
-        assertFalse (keyboard.isKeyHeld (keyIndex (40)));
+        // The split is now an octave lower on the keys: key 40 plays 52, key 41 plays 53
+        assertEquals (LEFT, keyboard.getZoneForKeyIndex (keyIndex (40)));
+        assertEquals (RIGHT, keyboard.getZoneForKeyIndex (keyIndex (41)));
+        assertEquals (RIGHT, keyboard.getZoneForKeyIndex (keyIndex (52)));
+
+        // Key 40 plays 52, which the left zone sends as 76 on channel 2
+        keyboard.noteOn (2, 76, 100);
+        assertTrue (keyboard.isKeyHeld (keyIndex (40)));
+        assertFalse (keyboard.isKeyHeld (keyIndex (52)));
     }
 
 

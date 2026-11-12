@@ -11,8 +11,9 @@ package pt.ztp.kontrol1.template;
  * template sends. Each key is traced through the zones of the template: it is held if the note
  * which it sends on its zone's MIDI channel is held.
  *
- * The zones are bound to the physical keys: when the keyboard is octave shifted, they stay on the
- * same keys and the keys send shifted notes.
+ * The keyboard applies its octave shift before the zones: a key belongs to the zone which contains
+ * the note it plays after the shift. So when the keyboard is octave shifted, the zones move along
+ * the keys.
  *
  * All methods must be called from the controller thread.
  *
@@ -78,7 +79,7 @@ public class NiTemplateKeyboard
      */
     public NiZone getZoneForKeyIndex (final int keyIndex)
     {
-        return this.template == null ? null : this.template.getZoneForKey (this.defaultFirstNote + keyIndex);
+        return this.template == null ? null : this.template.getZoneForKey (this.getShiftedNote (keyIndex));
     }
 
 
@@ -93,16 +94,28 @@ public class NiTemplateKeyboard
         if (this.template == null)
             return false;
 
-        final int keyNote = this.defaultFirstNote + keyIndex;
+        final int keyNote = this.getShiftedNote (keyIndex);
         for (final NiZone zone: this.template.zones ())
         {
             if (!zone.contains (keyNote))
                 continue;
-            final int note = keyNote + this.octaveShift + zone.transpose ();
+            final int note = keyNote + zone.transpose ();
             if (note >= 0 && note < 128 && this.heldNotes[zone.channel () - 1][note])
                 return true;
         }
         return false;
+    }
+
+
+    /**
+     * Get the note which a key plays with the octave shift, before the zones transpose it.
+     *
+     * @param keyIndex The index of the key, 0 is the left-most key
+     * @return The note
+     */
+    private int getShiftedNote (final int keyIndex)
+    {
+        return this.defaultFirstNote + keyIndex + this.octaveShift;
     }
 
 
